@@ -14,7 +14,7 @@
 
 .letter {
   margin: 0 5px;
-  border-bottom: 2px solid #000;
+  /* border-bottom: 2px solid #000; */
   width: 20px;
   display: inline-block;
 }
