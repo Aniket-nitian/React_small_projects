@@ -7,6 +7,13 @@ import path from "path";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
@@ -45,13 +52,6 @@ app.post("/convertfile", upload.single("file"), function (req, res, next) {
     res.status(500).json("Internal Server Error");
   }
 });
-
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
 
 dotenv.config({
   path: "./.env",
