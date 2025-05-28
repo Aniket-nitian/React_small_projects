@@ -42,3 +42,70 @@ export const createCourse = async (req, res) => {
     res.status(500).json({ message: "Error creating course" });
   }
 };
+
+export const updateCourse = async (req, res) => {
+  const { courseId } = req.params;
+  const { title, description, price, image } = req.body;
+  try {
+    const course = await Course.updateOne(
+      {
+        _id: courseId,
+      },
+      {
+        title,
+        description,
+        price,
+        image: {
+          public_id: image.public_id,
+          url: image.url,
+        },
+      }
+    );
+    res.json({ message: "Course updated successfully", course });
+  } catch (error) {
+    console.log("Error in course updation", error);
+  }
+};
+
+export const deletedCourse = async (req, res) => {
+  const { courseId } = req.params;
+  try {
+    const course = await Course.findOneAndDelete({ _id: courseId });
+    if (!course) {
+      console.log("Course not found");
+      return res.status(400).json({ message: "Course not found" });
+    } else {
+      console.log("Course deleted successfully");
+      res.json({ message: "Course deleted successfully", course });
+    }
+  } catch (error) {
+    console.log("Error in course deletion", error);
+    res.status(500).json({ message: "Error in course deletion" });
+  }
+};
+
+export const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({});
+    //console.log(courses);
+    res.json({ message: "All courses", courses });
+  } catch (error) {
+    res.status(500).json({ message: "Error in getting all courses" });
+    console.log("Error in getting all courses", error);
+  }
+};
+
+export const courseDetails = async (req, res) => {
+  const { courseId } = req.params;
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(400).json({ message: "Course not found" });
+    } else {
+      res.json({ message: "Course details", course });
+    }
+  } catch (error) {
+    console.log("Error in course details", error);
+    res.status(500).json({ message: "Error in course details" });
+  }
+};

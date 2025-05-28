@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./src/db/index.js";
-import courseRoute from "./src/routes/course.route.js";
 import { v2 as cloudinary } from "cloudinary";
 import fileUpload from "express-fileupload";
 dotenv.config({
@@ -37,5 +36,10 @@ connectDB()
     console.log(err);
   });
 
+//! importing routes
+import courseRoute from "./src/routes/course.route.js";
+import userRoute from "./src/routes/user.route.js";
+
 //! Defining routes
 app.use("/api/v1/course", courseRoute);
+app.use("/api/v1/user", userRoute);
