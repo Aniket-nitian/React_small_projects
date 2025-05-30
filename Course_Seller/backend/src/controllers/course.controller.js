@@ -109,3 +109,7 @@ export const courseDetails = async (req, res) => {
     res.status(500).json({ message: "Error in course details" });
   }
 };
+
+export const buyCourses = async (req,res) = {
+  
+}

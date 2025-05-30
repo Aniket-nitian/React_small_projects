@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  buyCourses,
   courseDetails,
   createCourse,
   deletedCourse,
@@ -14,5 +15,7 @@ router.put("/update/:courseId", updateCourse);
 router.delete("/delete/:courseId", deletedCourse);
 router.get("/getcourses", getAllCourses);
 router.get("/:courseId", courseDetails);
+
+router.post("/buy/:courseId", buyCourses);
 
 export default router;
