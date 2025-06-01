@@ -7,6 +7,7 @@ import {
   getAllCourses,
   updateCourse,
 } from "../controllers/course.controller.js";
+import userMiddleware from "../middleware/user.middleware.js";
 
 const router = express.Router();
 
@@ -16,6 +17,6 @@ router.delete("/delete/:courseId", deletedCourse);
 router.get("/getcourses", getAllCourses);
 router.get("/:courseId", courseDetails);
 
-router.post("/buy/:courseId", buyCourses);
+router.post("/buy/:courseId", userMiddleware, buyCourses);
 
 export default router;

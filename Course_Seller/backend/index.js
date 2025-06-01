@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/db/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import fileUpload from "express-fileupload";
+
 dotenv.config({
   path: "./.env",
 });

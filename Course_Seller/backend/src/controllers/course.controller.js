@@ -1,5 +1,6 @@
 import { Course } from "../models/course.models.js";
 import { v2 as cloudinary } from "cloudinary";
+import { Purchase } from "../models/purchase.model.js";
 
 export const createCourse = async (req, res) => {
   const { title, description, price } = req.body;
@@ -110,6 +111,25 @@ export const courseDetails = async (req, res) => {
   }
 };
 
-export const buyCourses = async (req,res) = {
-  
-}
+export const buyCourses = async (req, res) => {
+  const { userId } = req;
+  const { courseId } = req.params;
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) {
+      res.json({ error: "Course not found" });
+    }
+    const existingPurchase = await Purchase.findOne({ userId, courseId });
+    if (existingPurchase) {
+      res.json({ error: "Course already bought" });
+    }
+    const newPurchase = new Purchase({ userId, courseId });
+    await newPurchase.save();
+    res
+      .status(201)
+      .json({ message: "Course purchase successfully", newPurchase });
+  } catch (error) {
+    console.log("error in course buying", error);
+    res.status(400).json({ errors: "error in course buying" });
+  }
+};

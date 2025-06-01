@@ -74,10 +74,18 @@ export const login = async (req, res) => {
       {
         id: user._id,
       },
-      process.env.JWT_USER_PASSWORD
+      process.env.JWT_USER_PASSWORD,
+      {
+        expiresIn: "1d",
+      }
     );
-
-    res.cookie("jwt", token);
+    const cookiesOptions = {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", //? true for https only
+      sameSite: "Strict",
+    };
+    res.cookie("jwt", token, cookiesOptions);
     res.status(201).json({ message: "Login Successfully", user, token });
   } catch (error) {
     console.log(error);
