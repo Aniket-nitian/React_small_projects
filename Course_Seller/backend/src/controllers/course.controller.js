@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { Purchase } from "../models/purchase.model.js";
 
 export const createCourse = async (req, res) => {
+  const adminId = req.adminId;
   const { title, description, price } = req.body;
   const { image } = req.files;
   console.log(title, description, price, image);
@@ -35,6 +36,7 @@ export const createCourse = async (req, res) => {
         public_id: cloud_response.public_id,
         url: cloud_response.secure_url,
       },
+      creatorId: adminId,
     };
     const course = await Course.create(coursedata);
     res.json({ message: "Course created successfully", course });
@@ -45,12 +47,14 @@ export const createCourse = async (req, res) => {
 };
 
 export const updateCourse = async (req, res) => {
+  const adminId = req.adminId;
   const { courseId } = req.params;
   const { title, description, price, image } = req.body;
   try {
     const course = await Course.updateOne(
       {
         _id: courseId,
+        creatorId: adminId,
       },
       {
         title,
@@ -69,9 +73,13 @@ export const updateCourse = async (req, res) => {
 };
 
 export const deletedCourse = async (req, res) => {
+  const adminId = req.adminId;
   const { courseId } = req.params;
   try {
-    const course = await Course.findOneAndDelete({ _id: courseId });
+    const course = await Course.findOneAndDelete({
+      _id: courseId,
+      creatorId: adminId,
+    });
     if (!course) {
       console.log("Course not found");
       return res.status(400).json({ message: "Course not found" });

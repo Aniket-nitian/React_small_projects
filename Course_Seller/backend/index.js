@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/db/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import fileUpload from "express-fileupload";
+import cookieParser from "cookie-parser";
 
 dotenv.config({
   path: "./.env",
@@ -12,6 +13,7 @@ const app = express();
 //!middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(
   fileUpload({
@@ -40,7 +42,9 @@ connectDB()
 //! importing routes
 import courseRoute from "./src/routes/course.route.js";
 import userRoute from "./src/routes/user.route.js";
+import adminRoute from "./src/routes/admin.route.js";
 
 //! Defining routes
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/admin", adminRoute);
