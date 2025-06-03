@@ -4,6 +4,7 @@ import connectDB from "./src/db/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config({
   path: "./.env",
@@ -14,6 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.FROTEND_URL,
+    credentials: true,
+  })
+);
 
 app.use(
   fileUpload({
